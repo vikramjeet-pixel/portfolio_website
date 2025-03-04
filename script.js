@@ -1,5 +1,5 @@
 // Initialize EmailJS
-emailjs.init("YOUR_USER_ID"); // Replace with your EmailJS User ID
+emailjs.init("iUQi0vu4gzI-yoS-n"); // Replace with your EmailJS User ID
 
 // Register GSAP ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
@@ -248,7 +248,7 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
     const toast = document.getElementById('toast');
     formMessage.textContent = 'Sending...';
 
-    emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', this)
+    emailjs.sendForm('service_1m40uhy', 'template_e003nvr', this)
         .then(() => {
             formMessage.textContent = '';
             this.reset();
