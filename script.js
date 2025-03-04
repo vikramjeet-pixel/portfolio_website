@@ -69,22 +69,22 @@ const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 scene.add(sphere);
 
 // Rotating Torus (Larger Size)
-const torusGeometry = new THREE.TorusGeometry(15, 1.5, 16, 100); // Increased radius to 15, tube to 1.5
+const torusGeometry = new THREE.TorusGeometry(13, 1.5, 16, 100); // Increased radius to 15, tube to 1.5
 const torusMaterial = new THREE.MeshBasicMaterial({ color: 0x88b7d5, wireframe: true });
 const torus = new THREE.Mesh(torusGeometry, torusMaterial);
 torus.position.z = -2; // Slightly behind the sphere
 scene.add(torus);
 
 // Orbiting Particles (Larger Size)
-const particleCount = 50;
+const particleCount = 1000;
 const particles = new THREE.Group();
 for (let i = 0; i < particleCount; i++) {
-    const particleGeometry = new THREE.SphereGeometry(0.3, 16, 16); // Increased radius to 0.3
+    const particleGeometry = new THREE.SphereGeometry(0.1, 16, 16); // Increased radius to 0.3
     const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x88b7d5 });
     const particle = new THREE.Mesh(particleGeometry, particleMaterial);
     
     const angle = (i / particleCount) * Math.PI * 2;
-    const radius = 12 + Math.random() * 5; // Increased radius to 12
+    const radius = 12 + Math.random() * 1000; // Increased radius to 12
     particle.position.set(
         Math.cos(angle) * radius,
         Math.sin(angle) * radius,
@@ -102,7 +102,7 @@ const pointLight = new THREE.PointLight(0xffffff, 1);
 pointLight.position.set(10, 10, 10);
 scene.add(pointLight);
 
-camera.position.z = 20; // Adjusted for larger objects
+camera.position.z = 50; // Adjusted for larger objects
 
 // Cursor Interaction
 const cursor = { x: 0, y: 0 };
