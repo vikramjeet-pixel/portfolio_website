@@ -1,6 +1,3 @@
-// Initialize EmailJS
-emailjs.init("CBO9xSBT9kIQYL35e");
-
 // Register GSAP ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,7 +7,6 @@ themeToggle.addEventListener('click', () => {
     const html = document.documentElement;
     html.classList.toggle('dark-mode');
     html.classList.toggle('light-mode');
-    
     gsap.to('body', {
         opacity: 0,
         duration: 0.2,
@@ -23,7 +19,6 @@ themeToggle.addEventListener('click', () => {
             });
         }
     });
-
     const icon = themeToggle.querySelector('i');
     icon.classList.toggle('fa-moon');
     icon.classList.toggle('fa-sun');
@@ -46,10 +41,10 @@ document.querySelectorAll('.scroll-link').forEach(link => {
         const target = document.querySelector(targetId);
         if (target) {
             target.scrollIntoView({ behavior: 'smooth' });
+            navLinks.classList.remove('active');
+            hamburger.querySelector('i').classList.remove('fa-times');
+            hamburger.querySelector('i').classList.add('fa-bars');
         }
-        navLinks.classList.remove('active');
-        hamburger.querySelector('i').classList.remove('fa-times');
-        hamburger.querySelector('i').classList.add('fa-bars');
     });
 });
 
@@ -109,14 +104,9 @@ for (let i = 0; i < particleCount; i++) {
         color: getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim()
     });
     const particle = new THREE.Mesh(particleGeometry, particleMaterial);
-    
     const angle = (i / particleCount) * Math.PI * 2;
     const radius = 12 + Math.random() * 1000;
-    particle.position.set(
-        Math.cos(angle) * radius,
-        Math.sin(angle) * radius,
-        Math.random() * 2 - 1
-    );
+    particle.position.set(Math.cos(angle) * radius, Math.sin(angle) * radius, Math.random() * 2 - 1);
     particle.userData = { 
         angle, 
         radius, 
@@ -179,10 +169,8 @@ function requestDeviceOrientation() {
 
 function handleOrientation(event) {
     if (!event.beta || !event.gamma) return;
-    
     const tiltX = event.gamma / 45;
     const tiltY = (event.beta - 90) / 45;
-    
     controls.x = THREE.MathUtils.lerp(controls.x, Math.max(-1, Math.min(1, tiltX)), 0.1);
     controls.y = THREE.MathUtils.lerp(controls.y, Math.max(-1, Math.min(1, tiltY)), 0.1);
 }
@@ -196,7 +184,6 @@ let time = 0;
 function animate() {
     requestAnimationFrame(animate);
     
-    // Update positions
     sphere.position.x = controls.x * 5;
     sphere.position.y = controls.y * 5;
     torus.position.x = controls.x * 3;
@@ -204,26 +191,17 @@ function animate() {
     particles.position.x = controls.x * 2;
     particles.position.y = controls.y * 2;
 
-    // Sphere Wobble
     const wobble = Math.sin(time) * 0.03;
-    sphere.scale.set(
-        1 + wobble,
-        1 - wobble,
-        1 + wobble * 0.5
-    );
-
-    // Torus Scaling
+    sphere.scale.set(1 + wobble, 1 - wobble, 1 + wobble * 0.5);
     const torusScale = 1 + Math.sin(time * 0.7) * 0.1;
     torus.scale.set(torusScale, torusScale, 1);
 
-    // Rotate Objects
     sphere.rotation.x += 0.01 + Math.sin(time) * 0.005;
     sphere.rotation.y += 0.01;
     torus.rotation.x -= 0.015;
     torus.rotation.y += 0.015;
     lightRing.rotation.z += 0.02;
 
-    // Update Particles and Trails with Clustering
     const positions = [];
     const colors = [];
     const particleColor = parseInt(getComputedStyle(document.documentElement)
@@ -239,11 +217,9 @@ function animate() {
         particle.position.set(x, y, z);
         particle.material.color.setHex(particleColor);
         
-        // Update trail
         particle.userData.trail.unshift({ x, y, z });
         particle.userData.trail.pop();
         
-        // Add trail segments
         const r = (particleColor >> 16 & 255) / 255;
         const g = (particleColor >> 8 & 255) / 255;
         const b = (particleColor & 255) / 255;
@@ -258,10 +234,7 @@ function animate() {
                 particle.userData.trail[j + 1].y,
                 particle.userData.trail[j + 1].z
             );
-            colors.push(
-                r, g, b, alpha,
-                r, g, b, alpha * 0.8
-            );
+            colors.push(r, g, b, alpha, r, g, b, alpha * 0.8);
         }
     });
     
@@ -270,12 +243,9 @@ function animate() {
     trailGeometry.attributes.position.needsUpdate = true;
     trailGeometry.attributes.color.needsUpdate = true;
 
-    // Animate Light
     directionalLight.position.x = Math.sin(time) * 20;
     directionalLight.position.y = Math.cos(time) * 20;
     lightRing.position.z = Math.sin(time * 0.5) * 5;
-
-    // Subtle Floating Effect
     scene.position.y = Math.sin(time) * 0.5;
 
     time += 0.02;
@@ -294,21 +264,17 @@ window.addEventListener('resize', () => {
 const nameElement = document.getElementById('floating-name');
 const nameText = "Vikramjeet Singh";
 nameElement.innerHTML = nameText.split('').map(char => `<span>${char}</span>`).join('');
-
 const spans = nameElement.querySelectorAll('span');
 document.addEventListener('mousemove', (e) => {
     const mouseX = e.clientX;
     const mouseY = e.clientY;
-
     spans.forEach((span, index) => {
         const rect = span.getBoundingClientRect();
         const spanX = rect.left + rect.width / 2;
         const spanY = rect.top + rect.height / 2;
-
         const distance = Math.sqrt((mouseX - spanX) ** 2 + (mouseY - spanY) ** 2);
         const maxDistance = 100;
         const floatStrength = Math.max(0, (maxDistance - distance) / maxDistance) * 20;
-
         gsap.to(span, {
             y: -floatStrength,
             duration: 0.3,
@@ -321,83 +287,63 @@ document.addEventListener('mousemove', (e) => {
 // GSAP Animations
 gsap.from(".navbar", { y: -100, duration: 1, ease: "power2.out" });
 gsap.from(".hero-content p", { opacity: 0, y: 50, duration: 1, delay: 0.7, ease: "power2.out" });
-gsap.from(".cta-btn", {
-    opacity: 0,
-    scale: 0.8,
-    duration: 1,
-    delay: 1,
-    ease: "back.out(1.7)",
-    stagger: 0.2
-});
+gsap.from(".cta-btn", { opacity: 0, scale: 0.8, duration: 1, delay: 1, ease: "back.out(1.7)", stagger: 0.2 });
 
 gsap.utils.toArray(".education-card").forEach(card => {
-    gsap.from(card, {
-        opacity: 0,
-        y: 100,
-        duration: 1,
-        scrollTrigger: {
-            trigger: card,
-            start: "top 80%",
-            ease: "power2.out"
-        }
-    });
+    gsap.from(card, { opacity: 0, y: 100, duration: 1, scrollTrigger: { trigger: card, start: "top 80%", ease: "power2.out" } });
 });
-
 gsap.utils.toArray(".skill-item").forEach(item => {
-    gsap.from(item, {
-        opacity: 0,
-        y: 50,
-        duration: 0.8,
-        scrollTrigger: {
-            trigger: item,
-            start: "top 80%",
-            ease: "power2.out"
-        }
-    });
+    gsap.from(item, { opacity: 0, y: 50, duration: 0.8, scrollTrigger: { trigger: item, start: "top 80%", ease: "power2.out" } });
 });
-
 gsap.utils.toArray(".project-card").forEach(card => {
-    gsap.from(card, {
-        opacity: 0,
-        y: 100,
-        duration: 1,
-        scrollTrigger: {
-            trigger: card,
-            start: "top 80%",
-            ease: "power2.out"
-        }
-    });
+    gsap.from(card, { opacity: 0, y: 100, duration: 1, scrollTrigger: { trigger: card, start: "top 80%", ease: "power2.out" } });
 });
-
-gsap.from(".social-icons a", {
-    opacity: 0,
-    stagger: 0.2,
-    duration: 0.5,
-    scrollTrigger: {
-        trigger: ".connect",
-        start: "top 80%",
-        ease: "power2.out"
-    }
-});
+gsap.from(".social-icons a", { opacity: 0, stagger: 0.2, duration: 0.5, scrollTrigger: { trigger: ".connect", start: "top 80%", ease: "power2.out" } });
 
 // Contact Form Submission with Toast
-document.getElementById('contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
+document.addEventListener('DOMContentLoaded', () => {
+    if (typeof emailjs === 'undefined') {
+        console.error('EmailJS library not loaded. Check the script source in HTML.');
+        document.getElementById('form-message').textContent = 'Email service unavailable.';
+        return;
+    }
+
+    emailjs.init("CBO9xSBT9kIQYL35e"); // Replace with your actual public key
+
+    const form = document.getElementById('contact-form');
     const formMessage = document.getElementById('form-message');
     const toast = document.getElementById('toast');
-    formMessage.textContent = 'Sending...';
+    const formBtn = form.querySelector('.form-btn');
 
-    emailjs.sendForm('service_5ww4pg9', 'template_f5pfu3u', this)
-        .then(() => {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        formBtn.classList.add('loading');
+        formMessage.textContent = 'Sending...';
+
+        try {
+            const result = await emailjs.sendForm('service_5ww4pg9', 'template_f5pfu3u', form); // Replace with your actual IDs
             formMessage.textContent = '';
-            this.reset();
-            toast.textContent = 'Message Sent Successfully!';
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }, (error) => {
-            formMessage.textContent = 'Failed to send message. Please try again.';
+            form.reset();
+            showToast('Message Sent Successfully!', '#4caf50');
+        } catch (error) {
+            let errorMsg = 'Failed to send message. Please try again later.';
+            if (error.status === 401) {
+                errorMsg = 'Invalid EmailJS credentials. Contact the developer.';
+            } else if (error.text) {
+                errorMsg = `Error: ${error.text}`;
+            }
+            formMessage.textContent = errorMsg;
+            showToast('Failed to Send Message', '#f44336');
             console.error('EmailJS Error:', error);
-        });
+        } finally {
+            formBtn.classList.remove('loading');
+        }
+    });
+
+    function showToast(message, bgColor) {
+        toast.textContent = message;
+        toast.style.background = bgColor;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
 });
