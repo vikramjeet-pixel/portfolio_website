@@ -1,5 +1,5 @@
 // Initialize EmailJS
-emailjs.init("iUQi0vu4gzI-yoS-n"); // Replace with your EmailJS User ID
+emailjs.init("iUQi0vu4gzI-yoS-n");
 
 // Register GSAP ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
@@ -38,12 +38,15 @@ hamburger.addEventListener('click', () => {
     hamburger.querySelector('i').classList.toggle('fa-times');
 });
 
-// Smooth Scroll
+// Smooth Scroll for Scroll Links
 document.querySelectorAll('.scroll-link').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
-        const target = document.querySelector(link.getAttribute('href'));
-        target.scrollIntoView({ behavior: 'smooth' });
+        const targetId = link.getAttribute('data-href') || link.getAttribute('href');
+        const target = document.querySelector(targetId);
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
         navLinks.classList.remove('active');
         hamburger.querySelector('i').classList.remove('fa-times');
         hamburger.querySelector('i').classList.add('fa-bars');
@@ -62,25 +65,49 @@ if (canvasContainer) {
     console.error("Canvas container '#three-canvas' not found!");
 }
 
-// Central Rotating Sphere (Larger Size)
+// Colors (consistent across themes)
+const SPHERE_COLOR = 0x6b5b95;
+const TORUS_COLOR = 0x88b7d5;
+
+// Central Sphere with Wobble
 const sphereGeometry = new THREE.SphereGeometry(10, 32, 32);
-const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x6b5b95, wireframe: true });
+const sphereMaterial = new THREE.MeshPhongMaterial({ 
+    color: SPHERE_COLOR,
+    wireframe: true,
+    shininess: 100
+});
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 scene.add(sphere);
 
-// Rotating Torus (Larger Size)
+// Scaling Torus
 const torusGeometry = new THREE.TorusGeometry(15, 1.5, 16, 100);
-const torusMaterial = new THREE.MeshBasicMaterial({ color: 0x88b7d5, wireframe: true });
+const torusMaterial = new THREE.MeshPhongMaterial({ 
+    color: TORUS_COLOR,
+    wireframe: true,
+    shininess: 100
+});
 const torus = new THREE.Mesh(torusGeometry, torusMaterial);
 torus.position.z = -2;
 scene.add(torus);
 
-// Orbiting Particles (Larger Size with Slower Speed)
+// Particle Clusters with Trails
 const particleCount = 5000;
 const particles = new THREE.Group();
+const trailGeometry = new THREE.BufferGeometry();
+const trailPositions = new Float32Array(particleCount * 3 * 10);
+const trailColors = new Float32Array(particleCount * 3 * 10);
+const trailMaterial = new THREE.LineBasicMaterial({ 
+    vertexColors: true,
+    blending: THREE.AdditiveBlending,
+    transparent: true
+});
+const trails = new THREE.LineSegments(trailGeometry, trailMaterial);
+
 for (let i = 0; i < particleCount; i++) {
     const particleGeometry = new THREE.SphereGeometry(0.1, 16, 16);
-    const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x88b7d5 });
+    const particleMaterial = new THREE.MeshBasicMaterial({ 
+        color: getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim()
+    });
     const particle = new THREE.Mesh(particleGeometry, particleMaterial);
     
     const angle = (i / particleCount) * Math.PI * 2;
@@ -90,25 +117,40 @@ for (let i = 0; i < particleCount; i++) {
         Math.sin(angle) * radius,
         Math.random() * 2 - 1
     );
-    particle.userData = { angle, radius, speed: 0.005 + Math.random() * 0.01 };
+    particle.userData = { 
+        angle, 
+        radius, 
+        speed: 0.005 + Math.random() * 0.01,
+        trail: new Array(10).fill().map(() => ({ x: 0, y: 0, z: 0 })),
+        clusterOffset: Math.random() * Math.PI * 2
+    };
     particles.add(particle);
 }
 scene.add(particles);
+scene.add(trails);
 
-// Lighting
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+// Rotating Light Ring
+const lightRingGeometry = new THREE.RingGeometry(20, 20.5, 32);
+const lightRingMaterial = new THREE.MeshBasicMaterial({ 
+    color: 0xffffff, 
+    side: THREE.DoubleSide,
+    transparent: true,
+    opacity: 0.3
+});
+const lightRing = new THREE.Mesh(lightRingGeometry, lightRingMaterial);
+scene.add(lightRing);
+
+// Enhanced Lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
 scene.add(ambientLight);
-const pointLight = new THREE.PointLight(0xffffff, 1);
-pointLight.position.set(10, 10, 10);
-scene.add(pointLight);
+const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+directionalLight.position.set(10, 10, 10);
+scene.add(directionalLight);
 
 camera.position.z = 50;
 
-// Input Controls (Mouse and Device Orientation)
-const controls = {
-    x: 0,
-    y: 0
-};
+// Input Controls
+const controls = { x: 0, y: 0 };
 
 // Mouse Interaction
 window.addEventListener('mousemove', (event) => {
@@ -116,7 +158,7 @@ window.addEventListener('mousemove', (event) => {
     controls.y = -(event.clientY / window.innerHeight) * 2 + 1;
 });
 
-// Device Orientation (Phone Tilt)
+// Device Orientation
 let hasOrientationPermission = false;
 function requestDeviceOrientation() {
     if (typeof DeviceOrientationEvent !== 'undefined' && 
@@ -130,27 +172,21 @@ function requestDeviceOrientation() {
             })
             .catch(console.error);
     } else {
-        // For browsers that don't need permission
         hasOrientationPermission = true;
         window.addEventListener('deviceorientation', handleOrientation);
     }
 }
 
 function handleOrientation(event) {
-    if (!event.beta || !event.gamma) return; // Check if orientation data is available
+    if (!event.beta || !event.gamma) return;
     
-    // Normalize device orientation values (-1 to 1 range)
-    // gamma: left-right tilt (-90 to 90 degrees)
-    // beta: front-back tilt (-180 to 180 degrees)
-    const tiltX = event.gamma / 45;  // -1 to 1 (limited to ±45°)
-    const tiltY = (event.beta - 90) / 45; // -1 to 1 (adjusted from vertical position)
+    const tiltX = event.gamma / 45;
+    const tiltY = (event.beta - 90) / 45;
     
-    // Smoothly update controls with device tilt
     controls.x = THREE.MathUtils.lerp(controls.x, Math.max(-1, Math.min(1, tiltX)), 0.1);
     controls.y = THREE.MathUtils.lerp(controls.y, Math.max(-1, Math.min(1, tiltY)), 0.1);
 }
 
-// Request permission on mobile devices
 if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
     canvasContainer.addEventListener('click', requestDeviceOrientation, { once: true });
 }
@@ -160,31 +196,84 @@ let time = 0;
 function animate() {
     requestAnimationFrame(animate);
     
-    // Update 3D objects based on controls (mouse or tilt)
+    // Update positions
     sphere.position.x = controls.x * 5;
     sphere.position.y = controls.y * 5;
-
     torus.position.x = controls.x * 3;
     torus.position.y = controls.y * 3;
-
     particles.position.x = controls.x * 2;
     particles.position.y = controls.y * 2;
 
-    // Rotate Sphere
-    sphere.rotation.x += 0.01;
-    sphere.rotation.y += 0.01;
+    // Sphere Wobble
+    const wobble = Math.sin(time) * 0.03;
+    sphere.scale.set(
+        1 + wobble,
+        1 - wobble,
+        1 + wobble * 0.5
+    );
 
-    // Rotate Torus
+    // Torus Scaling
+    const torusScale = 1 + Math.sin(time * 0.7) * 0.1;
+    torus.scale.set(torusScale, torusScale, 1);
+
+    // Rotate Objects
+    sphere.rotation.x += 0.01 + Math.sin(time) * 0.005;
+    sphere.rotation.y += 0.01;
     torus.rotation.x -= 0.015;
     torus.rotation.y += 0.015;
+    lightRing.rotation.z += 0.02;
 
-    // Orbit Particles
-    particles.children.forEach(particle => {
+    // Update Particles and Trails with Clustering
+    const positions = [];
+    const colors = [];
+    const particleColor = parseInt(getComputedStyle(document.documentElement)
+        .getPropertyValue('--particle-color').trim().replace('#', ''), 16);
+    
+    particles.children.forEach((particle, i) => {
         particle.userData.angle += particle.userData.speed;
-        particle.position.x = Math.cos(particle.userData.angle) * particle.userData.radius;
-        particle.position.y = Math.sin(particle.userData.angle) * particle.userData.radius;
-        particle.position.z = Math.sin(time + particle.userData.angle) * 2;
+        const cluster = Math.sin(time + particle.userData.clusterOffset) * 5;
+        const x = Math.cos(particle.userData.angle) * (particle.userData.radius + cluster);
+        const y = Math.sin(particle.userData.angle) * (particle.userData.radius + cluster);
+        const z = Math.sin(time + particle.userData.angle) * 2;
+        
+        particle.position.set(x, y, z);
+        particle.material.color.setHex(particleColor);
+        
+        // Update trail
+        particle.userData.trail.unshift({ x, y, z });
+        particle.userData.trail.pop();
+        
+        // Add trail segments
+        const r = (particleColor >> 16 & 255) / 255;
+        const g = (particleColor >> 8 & 255) / 255;
+        const b = (particleColor & 255) / 255;
+        
+        for (let j = 0; j < particle.userData.trail.length - 1; j++) {
+            const alpha = 1 - (j / particle.userData.trail.length);
+            positions.push(
+                particle.userData.trail[j].x,
+                particle.userData.trail[j].y,
+                particle.userData.trail[j].z,
+                particle.userData.trail[j + 1].x,
+                particle.userData.trail[j + 1].y,
+                particle.userData.trail[j + 1].z
+            );
+            colors.push(
+                r, g, b, alpha,
+                r, g, b, alpha * 0.8
+            );
+        }
     });
+    
+    trailGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positions), 3));
+    trailGeometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(colors), 4));
+    trailGeometry.attributes.position.needsUpdate = true;
+    trailGeometry.attributes.color.needsUpdate = true;
+
+    // Animate Light
+    directionalLight.position.x = Math.sin(time) * 20;
+    directionalLight.position.y = Math.cos(time) * 20;
+    lightRing.position.z = Math.sin(time * 0.5) * 5;
 
     // Subtle Floating Effect
     scene.position.y = Math.sin(time) * 0.5;
@@ -232,7 +321,14 @@ document.addEventListener('mousemove', (e) => {
 // GSAP Animations
 gsap.from(".navbar", { y: -100, duration: 1, ease: "power2.out" });
 gsap.from(".hero-content p", { opacity: 0, y: 50, duration: 1, delay: 0.7, ease: "power2.out" });
-gsap.from(".cta-btn", { opacity: 0, scale: 0.8, duration: 1, delay: 1, ease: "back.out(1.7)" });
+gsap.from(".cta-btn", {
+    opacity: 0,
+    scale: 0.8,
+    duration: 1,
+    delay: 1,
+    ease: "back.out(1.7)",
+    stagger: 0.2
+});
 
 gsap.utils.toArray(".education-card").forEach(card => {
     gsap.from(card, {

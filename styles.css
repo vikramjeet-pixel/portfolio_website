@@ -26,6 +26,7 @@ html.dark-mode {
     --secondary-color: #88b7d5;
     --card-bg: #2b2c4f;
     --nav-bg: rgba(26, 27, 46, 0.9);
+    --particle-color: #88b7d5;
 }
 
 html.light-mode {
@@ -35,6 +36,7 @@ html.light-mode {
     --secondary-color: #90c7e3;
     --card-bg: #fff;
     --nav-bg: rgba(240, 242, 245, 0.9);
+    --particle-color: #5e548e;
 }
 
 /* Navbar */
@@ -57,6 +59,7 @@ html.light-mode {
     font-weight: bold;
     color: var(--accent-color);
     transition: transform 0.3s ease;
+    margin-right: 1rem; /* Added space between logo and hamburger */
 }
 
 .logo:hover {
@@ -111,7 +114,6 @@ html.light-mode {
     align-items: center;
     text-align: center;
     overflow: hidden;
-    /* Removed solid background to let Three.js canvas show through */
 }
 
 #three-canvas {
@@ -120,12 +122,12 @@ html.light-mode {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 0; /* Changed to 0 to ensure visibility behind content */
+    z-index: 0;
 }
 
 .hero-content {
     position: relative;
-    z-index: 1; /* Ensure text is above canvas */
+    z-index: 1;
 }
 
 #floating-name {
@@ -148,6 +150,12 @@ html.light-mode {
     color: var(--text-color);
     margin-bottom: 1.875rem;
     animation: fadeInUp 1s ease-out 0.2s backwards;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
 }
 
 .cta-btn {
