@@ -63,34 +63,34 @@ if (canvasContainer) {
 }
 
 // Central Rotating Sphere (Larger Size)
-const sphereGeometry = new THREE.SphereGeometry(10, 32, 32); // Increased radius to 10
+const sphereGeometry = new THREE.SphereGeometry(10, 32, 32);
 const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x6b5b95, wireframe: true });
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 scene.add(sphere);
 
 // Rotating Torus (Larger Size)
-const torusGeometry = new THREE.TorusGeometry(13, 1.5, 16, 100); // Increased radius to 15, tube to 1.5
+const torusGeometry = new THREE.TorusGeometry(15, 1.5, 16, 100);
 const torusMaterial = new THREE.MeshBasicMaterial({ color: 0x88b7d5, wireframe: true });
 const torus = new THREE.Mesh(torusGeometry, torusMaterial);
-torus.position.z = -2; // Slightly behind the sphere
+torus.position.z = -2;
 scene.add(torus);
 
-// Orbiting Particles (Larger Size)
-const particleCount = 1000;
+// Orbiting Particles (Larger Size with Slower Speed)
+const particleCount = 5000;
 const particles = new THREE.Group();
 for (let i = 0; i < particleCount; i++) {
-    const particleGeometry = new THREE.SphereGeometry(0.1, 16, 16); // Increased radius to 0.3
+    const particleGeometry = new THREE.SphereGeometry(0.1, 16, 16);
     const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x88b7d5 });
     const particle = new THREE.Mesh(particleGeometry, particleMaterial);
     
     const angle = (i / particleCount) * Math.PI * 2;
-    const radius = 12 + Math.random() * 1000; // Increased radius to 12
+    const radius = 12 + Math.random() * 1000;
     particle.position.set(
         Math.cos(angle) * radius,
         Math.sin(angle) * radius,
         Math.random() * 2 - 1
     );
-    particle.userData = { angle, radius, speed: 0.02 + Math.random() * 0.03 };
+    particle.userData = { angle, radius, speed: 0.005 + Math.random() * 0.01 };
     particles.add(particle);
 }
 scene.add(particles);
@@ -102,30 +102,73 @@ const pointLight = new THREE.PointLight(0xffffff, 1);
 pointLight.position.set(10, 10, 10);
 scene.add(pointLight);
 
-camera.position.z = 50; // Adjusted for larger objects
+camera.position.z = 50;
 
-// Cursor Interaction
-const cursor = { x: 0, y: 0 };
+// Input Controls (Mouse and Device Orientation)
+const controls = {
+    x: 0,
+    y: 0
+};
+
+// Mouse Interaction
 window.addEventListener('mousemove', (event) => {
-    // Normalize cursor position to [-1, 1] range
-    cursor.x = (event.clientX / window.innerWidth) * 2 - 1;
-    cursor.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    controls.x = (event.clientX / window.innerWidth) * 2 - 1;
+    controls.y = -(event.clientY / window.innerHeight) * 2 + 1;
 });
+
+// Device Orientation (Phone Tilt)
+let hasOrientationPermission = false;
+function requestDeviceOrientation() {
+    if (typeof DeviceOrientationEvent !== 'undefined' && 
+        typeof DeviceOrientationEvent.requestPermission === 'function') {
+        DeviceOrientationEvent.requestPermission()
+            .then(permissionState => {
+                if (permissionState === 'granted') {
+                    hasOrientationPermission = true;
+                    window.addEventListener('deviceorientation', handleOrientation);
+                }
+            })
+            .catch(console.error);
+    } else {
+        // For browsers that don't need permission
+        hasOrientationPermission = true;
+        window.addEventListener('deviceorientation', handleOrientation);
+    }
+}
+
+function handleOrientation(event) {
+    if (!event.beta || !event.gamma) return; // Check if orientation data is available
+    
+    // Normalize device orientation values (-1 to 1 range)
+    // gamma: left-right tilt (-90 to 90 degrees)
+    // beta: front-back tilt (-180 to 180 degrees)
+    const tiltX = event.gamma / 45;  // -1 to 1 (limited to ±45°)
+    const tiltY = (event.beta - 90) / 45; // -1 to 1 (adjusted from vertical position)
+    
+    // Smoothly update controls with device tilt
+    controls.x = THREE.MathUtils.lerp(controls.x, Math.max(-1, Math.min(1, tiltX)), 0.1);
+    controls.y = THREE.MathUtils.lerp(controls.y, Math.max(-1, Math.min(1, tiltY)), 0.1);
+}
+
+// Request permission on mobile devices
+if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+    canvasContainer.addEventListener('click', requestDeviceOrientation, { once: true });
+}
 
 // Animation Loop
 let time = 0;
 function animate() {
     requestAnimationFrame(animate);
     
-    // Update 3D objects based on cursor position
-    sphere.position.x = cursor.x * 5; // Move sphere horizontally
-    sphere.position.y = cursor.y * 5; // Move sphere vertically
+    // Update 3D objects based on controls (mouse or tilt)
+    sphere.position.x = controls.x * 5;
+    sphere.position.y = controls.y * 5;
 
-    torus.position.x = cursor.x * 3; // Move torus horizontally
-    torus.position.y = cursor.y * 3; // Move torus vertically
+    torus.position.x = controls.x * 3;
+    torus.position.y = controls.y * 3;
 
-    particles.position.x = cursor.x * 2; // Move particles horizontally
-    particles.position.y = cursor.y * 2; // Move particles vertically
+    particles.position.x = controls.x * 2;
+    particles.position.y = controls.y * 2;
 
     // Rotate Sphere
     sphere.rotation.x += 0.01;
