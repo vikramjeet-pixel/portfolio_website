@@ -86,7 +86,7 @@ torus.position.z = -2;
 scene.add(torus);
 
 // Particle Clusters with Trails
-const particleCount = 5000;
+const particleCount = 1000;
 const particles = new THREE.Group();
 const trailGeometry = new THREE.BufferGeometry();
 const trailPositions = new Float32Array(particleCount * 3 * 10);
@@ -110,7 +110,7 @@ for (let i = 0; i < particleCount; i++) {
     particle.userData = { 
         angle, 
         radius, 
-        speed: 0.005 + Math.random() * 0.01,
+        speed: 0.005 + Math.random() * 0.007,
         trail: new Array(10).fill().map(() => ({ x: 0, y: 0, z: 0 })),
         clusterOffset: Math.random() * Math.PI * 2
     };
