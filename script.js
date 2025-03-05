@@ -60,49 +60,31 @@ if (canvasContainer) {
     console.error("Canvas container '#three-canvas' not found!");
 }
 
-// Colors (consistent across themes)
 const SPHERE_COLOR = 0x6b5b95;
 const TORUS_COLOR = 0x88b7d5;
 
-// Central Sphere with Wobble
 const sphereGeometry = new THREE.SphereGeometry(10, 32, 32);
-const sphereMaterial = new THREE.MeshPhongMaterial({ 
-    color: SPHERE_COLOR,
-    wireframe: true,
-    shininess: 100
-});
+const sphereMaterial = new THREE.MeshPhongMaterial({ color: SPHERE_COLOR, wireframe: true, shininess: 100 });
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 scene.add(sphere);
 
-// Scaling Torus
 const torusGeometry = new THREE.TorusGeometry(15, 1.5, 16, 100);
-const torusMaterial = new THREE.MeshPhongMaterial({ 
-    color: TORUS_COLOR,
-    wireframe: true,
-    shininess: 100
-});
+const torusMaterial = new THREE.MeshPhongMaterial({ color: TORUS_COLOR, wireframe: true, shininess: 100 });
 const torus = new THREE.Mesh(torusGeometry, torusMaterial);
 torus.position.z = -2;
 scene.add(torus);
 
-// Particle Clusters with Trails
-const particleCount = 1000;
+const particleCount = 5000;
 const particles = new THREE.Group();
 const trailGeometry = new THREE.BufferGeometry();
 const trailPositions = new Float32Array(particleCount * 3 * 10);
 const trailColors = new Float32Array(particleCount * 3 * 10);
-const trailMaterial = new THREE.LineBasicMaterial({ 
-    vertexColors: true,
-    blending: THREE.AdditiveBlending,
-    transparent: true
-});
+const trailMaterial = new THREE.LineBasicMaterial({ vertexColors: true, blending: THREE.AdditiveBlending, transparent: true });
 const trails = new THREE.LineSegments(trailGeometry, trailMaterial);
 
 for (let i = 0; i < particleCount; i++) {
     const particleGeometry = new THREE.SphereGeometry(0.1, 16, 16);
-    const particleMaterial = new THREE.MeshBasicMaterial({ 
-        color: getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim()
-    });
+    const particleMaterial = new THREE.MeshBasicMaterial({ color: getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim() });
     const particle = new THREE.Mesh(particleGeometry, particleMaterial);
     const angle = (i / particleCount) * Math.PI * 2;
     const radius = 12 + Math.random() * 1000;
@@ -110,7 +92,7 @@ for (let i = 0; i < particleCount; i++) {
     particle.userData = { 
         angle, 
         radius, 
-        speed: 0.005 + Math.random() * 0.007,
+        speed: 0.005 + Math.random() * 0.01,
         trail: new Array(10).fill().map(() => ({ x: 0, y: 0, z: 0 })),
         clusterOffset: Math.random() * Math.PI * 2
     };
@@ -119,18 +101,11 @@ for (let i = 0; i < particleCount; i++) {
 scene.add(particles);
 scene.add(trails);
 
-// Rotating Light Ring
 const lightRingGeometry = new THREE.RingGeometry(20, 20.5, 32);
-const lightRingMaterial = new THREE.MeshBasicMaterial({ 
-    color: 0xffffff, 
-    side: THREE.DoubleSide,
-    transparent: true,
-    opacity: 0.3
-});
+const lightRingMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0.3 });
 const lightRing = new THREE.Mesh(lightRingGeometry, lightRingMaterial);
 scene.add(lightRing);
 
-// Enhanced Lighting
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
 scene.add(ambientLight);
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
@@ -139,20 +114,16 @@ scene.add(directionalLight);
 
 camera.position.z = 50;
 
-// Input Controls
 const controls = { x: 0, y: 0 };
 
-// Mouse Interaction
 window.addEventListener('mousemove', (event) => {
     controls.x = (event.clientX / window.innerWidth) * 2 - 1;
     controls.y = -(event.clientY / window.innerHeight) * 2 + 1;
 });
 
-// Device Orientation
 let hasOrientationPermission = false;
 function requestDeviceOrientation() {
-    if (typeof DeviceOrientationEvent !== 'undefined' && 
-        typeof DeviceOrientationEvent.requestPermission === 'function') {
+    if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
         DeviceOrientationEvent.requestPermission()
             .then(permissionState => {
                 if (permissionState === 'granted') {
@@ -179,7 +150,6 @@ if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
     canvasContainer.addEventListener('click', requestDeviceOrientation, { once: true });
 }
 
-// Animation Loop
 let time = 0;
 function animate() {
     requestAnimationFrame(animate);
@@ -204,8 +174,7 @@ function animate() {
 
     const positions = [];
     const colors = [];
-    const particleColor = parseInt(getComputedStyle(document.documentElement)
-        .getPropertyValue('--particle-color').trim().replace('#', ''), 16);
+    const particleColor = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim().replace('#', ''), 16);
     
     particles.children.forEach((particle, i) => {
         particle.userData.angle += particle.userData.speed;
@@ -253,14 +222,12 @@ function animate() {
 }
 animate();
 
-// Resize Handler
 window.addEventListener('resize', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
 });
 
-// Floating Name Animation
 const nameElement = document.getElementById('floating-name');
 const nameText = "Vikramjeet Singh";
 nameElement.innerHTML = nameText.split('').map(char => `<span>${char}</span>`).join('');
@@ -298,7 +265,43 @@ gsap.utils.toArray(".skill-item").forEach(item => {
 gsap.utils.toArray(".project-card").forEach(card => {
     gsap.from(card, { opacity: 0, y: 100, duration: 1, scrollTrigger: { trigger: card, start: "top 80%", ease: "power2.out" } });
 });
+gsap.utils.toArray(".certification-card").forEach(card => {
+    gsap.from(card, { opacity: 0, y: 100, duration: 1, scrollTrigger: { trigger: card, start: "top 80%", ease: "power2.out" } });
+});
 gsap.from(".social-icons a", { opacity: 0, stagger: 0.2, duration: 0.5, scrollTrigger: { trigger: ".connect", start: "top 80%", ease: "power2.out" } });
+
+// Certification Card Interactivity
+document.querySelectorAll('.certification-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const description = card.querySelector('.cert-description');
+        const link = card.querySelector('.cert-link');
+        const isActive = card.classList.contains('active');
+
+        // Toggle active state
+        card.classList.toggle('active');
+
+        // Show/hide details with animation
+        if (isActive) {
+            gsap.to([description, link], {
+                opacity: 0,
+                height: 0,
+                duration: 0.3,
+                ease: 'power2.in',
+                onComplete: () => {
+                    description.classList.add('hidden');
+                    link.classList.add('hidden');
+                }
+            });
+        } else {
+            description.classList.remove('hidden');
+            link.classList.remove('hidden');
+            gsap.fromTo([description, link], 
+                { opacity: 0, height: 0 },
+                { opacity: 1, height: 'auto', duration: 0.3, ease: 'power2.out' }
+            );
+        }
+    });
+});
 
 // Contact Form Submission with Toast
 document.addEventListener('DOMContentLoaded', () => {

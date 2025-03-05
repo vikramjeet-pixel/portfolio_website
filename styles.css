@@ -59,7 +59,7 @@ html.light-mode {
     font-weight: bold;
     color: var(--accent-color);
     transition: transform 0.3s ease;
-    margin-right: 1rem; /* Added space between logo and hamburger */
+    margin-right: 1rem;
 }
 
 .logo:hover {
@@ -304,13 +304,13 @@ html.light-mode {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .project-card:hover {
     transform: translateY(-0.625rem);
     box-shadow: 0 0.625rem 1.25rem rgba(107, 91, 149, 0.3);
-    background: darken(var(--card-bg), 5%);
+    filter: brightness(95%);
 }
 
 .project-card h3 {
@@ -373,10 +373,95 @@ html.light-mode {
     box-shadow: 0 0.375rem 0.9375rem rgba(0, 0, 0, 0.3);
 }
 
+/* Certifications Section */
+/* ... Previous styles remain unchanged ... */
+
+.certifications {
+    padding: 6.25rem 3.125rem;
+    background: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.certifications h2 {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
+    margin-bottom: 3.125rem;
+    text-align: center;
+}
+
+.certification-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(18.75rem, 1fr));
+    gap: 1.875rem;
+    max-width: 75rem;
+    width: 100%;
+}
+
+.certification-card {
+    background: var(--cert-card-bg);
+    padding: 1.25rem;
+    border-radius: 0.625rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    position: relative;
+}
+
+.certification-card:hover {
+    transform: translateY(-0.625rem);
+    box-shadow: 0 0.625rem 1.25rem rgba(107, 91, 149, 0.5);
+    background: var(--cert-card-hover);
+}
+
+.certification-card.active {
+    background: var(--cert-card-active);
+}
+
+.certification-card h3 {
+    font-size: 1.25rem;
+    color: var(--secondary-color);
+    margin-bottom: 0.625rem;
+}
+
+.certification-card .cert-details {
+    font-size: 0.875rem;
+    color: var(--text-color);
+    margin-bottom: 0.9375rem;
+}
+
+.certification-card .cert-description {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 0.9375rem;
+}
+
+.certification-card .cert-link {
+    display: inline-block;
+    padding: 0.625rem 1.25rem;
+    background: var(--accent-color);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 1.5625rem;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.certification-card .cert-link:hover {
+    background: var(--secondary-color);
+    transform: translateY(-0.1875rem);
+}
+
+.hidden {
+    display: none;
+}
+
+/* ... Rest of the styles remain unchanged ... */
+
 /* Connect Section */
 .connect {
     padding: 6.25rem 3.125rem;
-    background: var(--card-bg);
+    background: var(--bg-color);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -459,10 +544,16 @@ html.light-mode {
     font-size: 1rem;
     border-radius: 0.3125rem;
     cursor: pointer;
-    transition: background 0.3s ease, transform 0.3s ease;
+    transition: background 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
 }
 
-.contact-form .form-btn:hover {
+.contact-form .form-btn.loading {
+    opacity: 0.7;
+    pointer-events: none;
+    background: var(--secondary-color);
+}
+
+.contact-form .form-btn:hover:not(.loading) {
     background: var(--secondary-color);
     transform: translateY(-0.125rem);
 }
@@ -501,7 +592,7 @@ footer {
     background: var(--bg-color);
     text-align: center;
     font-size: 0.875rem;
-    color: lighten(var(--text-color), 20%);
+    color: #bbb;
 }
 
 /* Mobile Responsiveness */
@@ -552,15 +643,15 @@ footer {
         font-size: 0.875rem;
     }
 
-    .education, .skills, .projects, .connect {
+    .education, .skills, .projects, .certifications, .connect {
         padding: 3.125rem 1.25rem;
     }
 
-    .education h2, .skills h2, .projects h2, .connect h2 {
+    .education h2, .skills h2, .projects h2, .certifications h2, .connect h2 {
         font-size: 1.875rem;
     }
 
-    .education-grid, .project-grid {
+    .education-grid, .project-grid, .certification-grid {
         grid-template-columns: 1fr;
     }
 
@@ -593,7 +684,7 @@ footer {
         font-size: 0.875rem;
     }
 
-    .education h2, .skills h2, .projects h2, .connect h2 {
+    .education h2, .skills h2, .projects h2, .certifications h2, .connect h2 {
         font-size: 1.875rem;
     }
 }
