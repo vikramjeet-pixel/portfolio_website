@@ -20,23 +20,29 @@ body {
 
 /* Theme Variables */
 html.dark-mode {
-    --bg-color: #1a1b2e;
-    --text-color: #e0e0e0;
-    --accent-color: #6b5b95;
-    --secondary-color: #88b7d5;
-    --card-bg: #2b2c4f;
-    --nav-bg: rgba(26, 27, 46, 0.9);
-    --particle-color: #88b7d5;
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --accent-color: #ffffff;
+    --secondary-color: #999999;
+    --card-bg: #333333;
+    --nav-bg: rgba(0, 0, 0, 0.9);
+    --particle-color: #ffffff;
+    --cert-card-bg: #333333;
+    --cert-card-hover: #666666;
+    --cert-card-active: #999999;
 }
 
 html.light-mode {
-    --bg-color: #f0f2f5;
-    --text-color: #333;
-    --accent-color: #5e548e;
-    --secondary-color: #90c7e3;
-    --card-bg: #fff;
-    --nav-bg: rgba(240, 242, 245, 0.9);
-    --particle-color: #5e548e;
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --accent-color: #000000;
+    --secondary-color: #666666;
+    --card-bg: #999999;
+    --nav-bg: rgba(255, 255, 255, 0.9);
+    --particle-color: #555555;
+    --cert-card-bg: #999999;
+    --cert-card-hover: #666666;
+    --cert-card-active: #333333;
 }
 
 /* Navbar */
@@ -80,7 +86,7 @@ html.light-mode {
 }
 
 .nav-links li a:hover {
-    color: var(--accent-color);
+    color: var(--secondary-color);
     transform: translateY(-2px);
 }
 
@@ -101,7 +107,7 @@ html.light-mode {
 }
 
 .theme-btn:hover {
-    color: var(--accent-color);
+    color: var(--secondary-color);
     transform: rotate(360deg);
 }
 
@@ -114,6 +120,7 @@ html.light-mode {
     align-items: center;
     text-align: center;
     overflow: hidden;
+    background: var(--bg-color);
 }
 
 #three-canvas {
@@ -123,6 +130,7 @@ html.light-mode {
     width: 100%;
     height: 100%;
     z-index: 0;
+    opacity: 1;
 }
 
 .hero-content {
@@ -131,50 +139,65 @@ html.light-mode {
 }
 
 #floating-name {
-    font-size: 3.75rem;
-    color: var(--secondary-color);
-    text-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.3);
+    font-size: 6rem;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--text-color);
+    text-shadow: none;
     display: flex;
     justify-content: center;
-    gap: 0.3125rem;
+    gap: 0.5rem;
     margin-bottom: 1.25rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.2rem;
 }
 
 #floating-name span {
     display: inline-block;
-    transition: transform 0.2s ease-out;
+    transition: -webkit-text-stroke-color 0.2s ease, color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease; /* Reduced duration for quicker hover */
+}
+
+#floating-name span:hover {
+    -webkit-text-stroke-color: #a3bffa;
+    text-shadow: 0 0 10px rgba(163, 191, 250, 0.7), 0 0 20px rgba(163, 191, 250, 0.5);
+    transform: rotateY(15deg);
 }
 
 .hero-content p {
     font-size: 1.5rem;
     color: var(--text-color);
-    margin-bottom: 1.875rem;
+    margin-bottom: 2rem;
     animation: fadeInUp 1s ease-out 0.2s backwards;
 }
 
 .hero-buttons {
     display: flex;
-    gap: 1rem;
+    flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    max-width: 100%;
+    padding: 0 1rem;
 }
 
 .cta-btn {
-    padding: 0.9375rem 1.875rem;
-    background: var(--accent-color);
-    border: none;
-    color: #fff;
+    padding: 0.75rem 2rem;
+    background: transparent;
+    border: 2px solid var(--accent-color);
+    color: var(--accent-color);
     font-size: 1.125rem;
-    border-radius: 1.5625rem;
+    border-radius: 0;
     cursor: pointer;
-    box-shadow: 0 0.25rem 0.9375rem rgba(107, 91, 149, 0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease;
     animation: fadeInUp 1s ease-out 0.4s backwards;
+    flex: 0 1 auto;
+    text-transform: uppercase;
+    font-weight: 600;
 }
 
 .cta-btn:hover {
-    transform: translateY(-0.3125rem) scale(1.05);
-    box-shadow: 0 0.5rem 1.25rem rgba(107, 91, 149, 0.7);
     background: var(--secondary-color);
+    color: var(--bg-color);
 }
 
 /* Education Section */
@@ -211,7 +234,7 @@ html.light-mode {
 
 .education-card:hover {
     transform: translateY(-0.625rem);
-    box-shadow: 0 0.625rem 1.25rem rgba(107, 91, 149, 0.3);
+    box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.3);
 }
 
 .education-card h3 {
@@ -269,7 +292,7 @@ html.light-mode {
 
 .skill-item:hover {
     transform: translateY(-0.3125rem);
-    box-shadow: 0 0.3125rem 0.9375rem rgba(107, 91, 149, 0.3);
+    box-shadow: 0 0.3125rem 0.9375rem rgba(0, 0, 0, 0.3);
 }
 
 /* Projects Section */
@@ -309,8 +332,8 @@ html.light-mode {
 
 .project-card:hover {
     transform: translateY(-0.625rem);
-    box-shadow: 0 0.625rem 1.25rem rgba(107, 91, 149, 0.3);
-    filter: brightness(95%);
+    box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.3);
+    filter: brightness(85%);
 }
 
 .project-card h3 {
@@ -343,16 +366,16 @@ html.light-mode {
 
 .demo-btn {
     background: var(--accent-color);
-    color: #fff;
+    color: var(--bg-color);
     border: 0.125rem solid var(--accent-color);
-    box-shadow: 0 0.25rem 0.625rem rgba(107, 91, 149, 0.3);
+    box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.3);
 }
 
 .demo-btn:hover {
-    background: transparent;
-    color: var(--accent-color);
+    background: var(--secondary-color);
+    color: var(--bg-color);
     transform: translateY(-0.1875rem);
-    box-shadow: 0 0.375rem 0.9375rem rgba(107, 91, 149, 0.5);
+    box-shadow: 0 0.375rem 0.9375rem rgba(0, 0, 0, 0.5);
 }
 
 .github-btn {
@@ -367,15 +390,13 @@ html.light-mode {
 }
 
 .github-btn:hover {
-    background: var(--text-color);
+    background: var(--secondary-color);
     color: var(--bg-color);
     transform: translateY(-0.1875rem);
     box-shadow: 0 0.375rem 0.9375rem rgba(0, 0, 0, 0.3);
 }
 
 /* Certifications Section */
-/* ... Previous styles remain unchanged ... */
-
 .certifications {
     padding: 6.25rem 3.125rem;
     background: var(--card-bg);
@@ -411,7 +432,7 @@ html.light-mode {
 
 .certification-card:hover {
     transform: translateY(-0.625rem);
-    box-shadow: 0 0.625rem 1.25rem rgba(107, 91, 149, 0.5);
+    box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.5);
     background: var(--cert-card-hover);
 }
 
@@ -441,7 +462,7 @@ html.light-mode {
     display: inline-block;
     padding: 0.625rem 1.25rem;
     background: var(--accent-color);
-    color: #fff;
+    color: var(--bg-color);
     text-decoration: none;
     border-radius: 1.5625rem;
     transition: background 0.3s ease, transform 0.3s ease;
@@ -455,8 +476,6 @@ html.light-mode {
 .hidden {
     display: none;
 }
-
-/* ... Rest of the styles remain unchanged ... */
 
 /* Connect Section */
 .connect {
@@ -488,12 +507,13 @@ html.light-mode {
 
 .social-icons a:hover {
     transform: scale(1.2) rotate(5deg);
+    color: var(--secondary-color);
 }
 
-.social-icons .fa-twitter:hover { color: #1DA1F2; }
-.social-icons .fa-linkedin:hover { color: #0077B5; }
-.social-icons .fa-github:hover { color: #333; }
-.social-icons .fa-instagram:hover { color: #E1306C; }
+.social-icons .fa-twitter:hover { color: var(--secondary-color); }
+.social-icons .fa-linkedin:hover { color: var(--secondary-color); }
+.social-icons .fa-github:hover { color: var(--secondary-color); }
+.social-icons .fa-instagram:hover { color: var(--secondary-color); }
 
 /* Contact Form */
 .contact-form {
@@ -540,7 +560,7 @@ html.light-mode {
     padding: 0.75rem;
     background: var(--accent-color);
     border: none;
-    color: #fff;
+    color: var(--bg-color);
     font-size: 1rem;
     border-radius: 0.3125rem;
     cursor: pointer;
@@ -571,8 +591,8 @@ html.light-mode {
     bottom: 1.25rem;
     right: 1.25rem;
     padding: 0.9375rem 1.5625rem;
-    background: #4caf50;
-    color: #fff;
+    background: #666666;
+    color: #ffffff;
     border-radius: 0.3125rem;
     box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
     opacity: 0;
@@ -592,7 +612,7 @@ footer {
     background: var(--bg-color);
     text-align: center;
     font-size: 0.875rem;
-    color: #bbb;
+    color: var(--secondary-color);
 }
 
 /* Mobile Responsiveness */
@@ -631,7 +651,8 @@ footer {
     }
 
     #floating-name {
-        font-size: 1.75rem;
+        font-size: 2.5rem;
+        -webkit-text-stroke: 0.5px var(--text-color);
     }
 
     .hero-content p {
@@ -639,7 +660,7 @@ footer {
     }
 
     .cta-btn {
-        padding: 0.625rem 1.25rem;
+        padding: 0.625rem 1.5rem;
         font-size: 0.875rem;
     }
 
@@ -672,7 +693,8 @@ footer {
 
 @media (max-width: 30rem) {
     #floating-name {
-        font-size: 1.75rem;
+        font-size: 2rem;
+        -webkit-text-stroke: 0.5px var(--text-color);
     }
 
     .hero-content p {
