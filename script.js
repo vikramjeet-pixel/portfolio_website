@@ -48,7 +48,7 @@ document.querySelectorAll('.scroll-link').forEach(link => {
     });
 });
 
-// Three.js 3D Animation
+// Three.js 3D Animation (Slow Star-like Particles)
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -60,20 +60,6 @@ if (canvasContainer) {
     console.error("Canvas container '#three-canvas' not found!");
 }
 
-const SPHERE_COLOR = 0x6b5b95;
-const TORUS_COLOR = 0x88b7d5;
-
-const sphereGeometry = new THREE.SphereGeometry(10, 32, 32);
-const sphereMaterial = new THREE.MeshPhongMaterial({ color: SPHERE_COLOR, wireframe: true, shininess: 100 });
-const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-scene.add(sphere);
-
-const torusGeometry = new THREE.TorusGeometry(15, 1.5, 16, 100);
-const torusMaterial = new THREE.MeshPhongMaterial({ color: TORUS_COLOR, wireframe: true, shininess: 100 });
-const torus = new THREE.Mesh(torusGeometry, torusMaterial);
-torus.position.z = -2;
-scene.add(torus);
-
 const particleCount = 5000;
 const particles = new THREE.Group();
 const trailGeometry = new THREE.BufferGeometry();
@@ -83,28 +69,23 @@ const trailMaterial = new THREE.LineBasicMaterial({ vertexColors: true, blending
 const trails = new THREE.LineSegments(trailGeometry, trailMaterial);
 
 for (let i = 0; i < particleCount; i++) {
-    const particleGeometry = new THREE.SphereGeometry(0.1, 16, 16);
+    const particleGeometry = new THREE.SphereGeometry(0.1, 16, 16); // Small size for star-like dots
     const particleMaterial = new THREE.MeshBasicMaterial({ color: getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim() });
     const particle = new THREE.Mesh(particleGeometry, particleMaterial);
     const angle = (i / particleCount) * Math.PI * 2;
-    const radius = 12 + Math.random() * 1000;
+    const radius = 12 + Math.random() * 1000; // Spread particles across a wide area
     particle.position.set(Math.cos(angle) * radius, Math.sin(angle) * radius, Math.random() * 2 - 1);
     particle.userData = { 
         angle, 
         radius, 
-        speed: 0.005 + Math.random() * 0.01,
+        speed: 0.0005 + Math.random() * 0.001, // Slower speed range: 0.0005 to 0.0015
         trail: new Array(10).fill().map(() => ({ x: 0, y: 0, z: 0 })),
-        clusterOffset: Math.random() * Math.PI * 2
+        clusterOffset: Math.random() * Math.PI * 2 // Retained for initial positioning
     };
     particles.add(particle);
 }
 scene.add(particles);
 scene.add(trails);
-
-const lightRingGeometry = new THREE.RingGeometry(20, 20.5, 32);
-const lightRingMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide, transparent: true, opacity: 0.3 });
-const lightRing = new THREE.Mesh(lightRingGeometry, lightRingMaterial);
-scene.add(lightRing);
 
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
 scene.add(ambientLight);
@@ -154,34 +135,19 @@ let time = 0;
 function animate() {
     requestAnimationFrame(animate);
     
-    sphere.position.x = controls.x * 5;
-    sphere.position.y = controls.y * 5;
-    torus.position.x = controls.x * 3;
-    torus.position.y = controls.y * 3;
+    // Update particle positions only, slower and without clustering
     particles.position.x = controls.x * 2;
     particles.position.y = controls.y * 2;
-
-    const wobble = Math.sin(time) * 0.03;
-    sphere.scale.set(1 + wobble, 1 - wobble, 1 + wobble * 0.5);
-    const torusScale = 1 + Math.sin(time * 0.7) * 0.1;
-    torus.scale.set(torusScale, torusScale, 1);
-
-    sphere.rotation.x += 0.01 + Math.sin(time) * 0.005;
-    sphere.rotation.y += 0.01;
-    torus.rotation.x -= 0.015;
-    torus.rotation.y += 0.015;
-    lightRing.rotation.z += 0.02;
 
     const positions = [];
     const colors = [];
     const particleColor = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim().replace('#', ''), 16);
     
     particles.children.forEach((particle, i) => {
-        particle.userData.angle += particle.userData.speed;
-        const cluster = Math.sin(time + particle.userData.clusterOffset) * 5;
-        const x = Math.cos(particle.userData.angle) * (particle.userData.radius + cluster);
-        const y = Math.sin(particle.userData.angle) * (particle.userData.radius + cluster);
-        const z = Math.sin(time + particle.userData.angle) * 2;
+        particle.userData.angle += particle.userData.speed; // Slow angular movement
+        const x = Math.cos(particle.userData.angle) * particle.userData.radius;
+        const y = Math.sin(particle.userData.angle) * particle.userData.radius;
+        const z = particle.position.z; // Keep z static for a 2D starfield effect
         
         particle.position.set(x, y, z);
         particle.material.color.setHex(particleColor);
@@ -214,7 +180,6 @@ function animate() {
 
     directionalLight.position.x = Math.sin(time) * 20;
     directionalLight.position.y = Math.cos(time) * 20;
-    lightRing.position.z = Math.sin(time * 0.5) * 5;
     scene.position.y = Math.sin(time) * 0.5;
 
     time += 0.02;
@@ -277,10 +242,8 @@ document.querySelectorAll('.certification-card').forEach(card => {
         const link = card.querySelector('.cert-link');
         const isActive = card.classList.contains('active');
 
-        // Toggle active state
         card.classList.toggle('active');
 
-        // Show/hide details with animation
         if (isActive) {
             gsap.to([description, link], {
                 opacity: 0,
