@@ -139,28 +139,15 @@ html.light-mode {
 }
 
 #floating-name {
-    font-size: 6rem;
-    color: transparent;
-    -webkit-text-stroke: 1px var(--text-color);
-    text-shadow: none;
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 0.2rem;
+    perspective: 1000px;
+    transform-style: preserve-3d;
 }
 
-#floating-name span {
+.char-wrapper {
     display: inline-block;
-    transition: -webkit-text-stroke-color 0.2s ease, color 0.2s ease, text-shadow 0.2s ease, transform 0.2s ease; /* Reduced duration for quicker hover */
-}
-
-#floating-name span:hover {
-    -webkit-text-stroke-color: #a3bffa;
-    text-shadow: 0 0 10px rgba(163, 191, 250, 0.7), 0 0 20px rgba(163, 191, 250, 0.5);
-    transform: rotateY(15deg);
+    transform-style: preserve-3d;
+    transition: color 0.3s ease;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3); /* Reduced stroke width */
 }
 
 .hero-content p {

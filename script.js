@@ -202,65 +202,124 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
 });
 
-// Name Animation (Enhanced Scaling, Pulsing, and Single-Letter Hover)
+// Name Animation (Enhanced with 3D effects and smoother transitions)
 const nameElement = document.getElementById('floating-name');
 const nameText = "Vikramjeet Singh";
-nameElement.innerHTML = nameText.split('').map(char => `<span>${char}</span>`).join('');
-const spans = nameElement.querySelectorAll('span');
+nameElement.innerHTML = nameText.split('').map((char, index) => 
+    `<span class="char-wrapper" style="--char-index: ${index}">${char}</span>`
+).join('');
+const spans = nameElement.querySelectorAll('.char-wrapper');
 
-// Initial scaling animation with pulsing
+// Enhanced initial animation with staggered 3D effect
 spans.forEach((span, index) => {
+    // Initial entrance animation
     gsap.fromTo(span, 
-        { scale: 0, opacity: 0 }, 
-        { scale: 1, opacity: 1, duration: 0.5, ease: 'power2.out', delay: index * 0.1 }
+        { 
+            scale: 0,
+            opacity: 0,
+            rotationX: -90,
+            z: -100
+        }, 
+        { 
+            scale: 1,
+            opacity: 1,
+            rotationX: 0,
+            z: 0,
+            duration: 0.8,
+            ease: "elastic.out(1, 0.7)",
+            delay: index * 0.1
+        }
     );
-    gsap.to(span, {
-        scale: 1.05,
-        repeat: -1,
-        yoyo: true,
-        duration: 1,
-        ease: 'sine.inOut',
-        delay: index * 0.1 + 0.5
+});
+
+// Enhanced hover effect with magnetic pull and color transitions
+let animationFrameId;
+
+document.addEventListener('mousemove', (e) => {
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+    }
+
+    animationFrameId = requestAnimationFrame(() => {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        const nameRect = nameElement.getBoundingClientRect();
+        const centerX = nameRect.left + nameRect.width / 2;
+        const centerY = nameRect.top + nameRect.height / 2;
+
+        // Calculate global magnetic pull
+        const globalPullX = (mouseX - centerX) / 50;
+        const globalPullY = (mouseY - centerY) / 50;
+
+        spans.forEach((span, index) => {
+            const rect = span.getBoundingClientRect();
+            const spanX = rect.left + rect.width / 2;
+            const spanY = rect.top + rect.height / 2;
+            const distance = Math.sqrt((mouseX - spanX) ** 2 + (mouseY - spanY) ** 2);
+            const maxDistance = 150;
+
+            if (distance < maxDistance) {
+                const intensity = 1 - (distance / maxDistance);
+                const pullX = (mouseX - spanX) * intensity * 0.3;
+                const pullY = (mouseY - spanY) * intensity * 0.3;
+
+                // Color transition
+                const hue = (index / spans.length) * 60 + 200; // Blue to purple range
+                const saturation = 70 + intensity * 30;
+                const lightness = 60 + intensity * 20;
+                
+                gsap.to(span, {
+                    x: pullX + globalPullX,
+                    y: pullY + globalPullY,
+                    scale: 1 + intensity * 0.2, // Reduced scale effect
+                    rotationY: pullX * 2,
+                    rotationX: -pullY * 2,
+                    duration: 0.3,
+                    color: `hsl(${hue}, ${saturation}%, ${lightness}%)`,
+                    textShadow: `
+                        0 0 ${intensity * 8}px hsla(${hue}, ${saturation}%, ${lightness}%, ${intensity * 0.7}),
+                        0 0 ${intensity * 15}px hsla(${hue}, ${saturation}%, ${lightness}%, ${intensity * 0.5})
+                    `, // Reduced shadow intensity
+                    ease: "power2.out"
+                });
+            } else {
+                // Smooth return to original position
+                gsap.to(span, {
+                    x: globalPullX,
+                    y: globalPullY,
+                    scale: 1,
+                    rotationY: 0,
+                    rotationX: 0,
+                    color: "inherit",
+                    textShadow: "none",
+                    duration: 0.5,
+                    ease: "power2.out"
+                });
+            }
+        });
     });
 });
 
-// Single-letter hover with gradient transition (optimized for quick response)
-document.addEventListener('mousemove', (e) => {
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
-    let closestSpan = null;
-    let minDistance = Infinity;
-
-    // Find the closest letter to the cursor
-    spans.forEach((span, index) => {
-        const rect = span.getBoundingClientRect();
-        const spanX = rect.left + rect.width / 2;
-        const spanY = rect.top + rect.height / 2;
-        const distance = Math.sqrt((mouseX - spanX) ** 2 + (mouseY - spanY) ** 2);
-        if (distance < minDistance) {
-            minDistance = distance;
-            closestSpan = span;
-        }
-    });
-
-    // Reset all letters to default state
-    spans.forEach(span => {
-        span.style.webkitTextStrokeColor = getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim();
-        span.style.textShadow = 'none';
-        span.style.transform = 'rotateY(0deg)';
-    });
-
-    // Apply hover effect to the closest letter only
-    if (closestSpan && minDistance < 150) {
-        const intensity = 1 - (minDistance / 150);
-        const r = Math.floor(163 + (230 - 163) * intensity);
-        const g = Math.floor(191 + (230 - 191) * intensity);
-        const b = Math.floor(250 - (250 - 204) * intensity);
-        closestSpan.style.webkitTextStrokeColor = `rgb(${r}, ${g}, ${b})`;
-        closestSpan.style.textShadow = `0 0 10px rgba(${r}, ${g}, ${b}, ${intensity}),
-                                       0 0 20px rgba(${r}, ${g}, ${b}, ${intensity * 0.7})`;
-        closestSpan.style.transform = `rotateY(${intensity * 15}deg)`;
+// Cleanup animation frame on mouse leave
+nameElement.addEventListener('mouseleave', () => {
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
     }
+    
+    // Reset all spans smoothly
+    spans.forEach(span => {
+        gsap.to(span, {
+            x: 0,
+            y: 0,
+            scale: 1,
+            rotationY: 0,
+            rotationX: 0,
+            color: "inherit",
+            textShadow: "none",
+            duration: 0.5,
+            ease: "power2.out"
+        });
+    });
 });
 
 // GSAP Animations
