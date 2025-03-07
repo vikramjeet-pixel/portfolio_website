@@ -204,10 +204,13 @@ window.addEventListener('resize', () => {
 
 // Name Animation (Enhanced with 3D effects and smoother transitions)
 const nameElement = document.getElementById('floating-name');
-const nameText = "Vikramjeet Singh";
-nameElement.innerHTML = nameText.split('').map((char, index) => 
+const firstName = "Vikramjeet";
+const lastName = "Singh";
+nameElement.innerHTML = `${firstName.split('').map((char, index) => 
     `<span class="char-wrapper" style="--char-index: ${index}">${char}</span>`
-).join('');
+).join('')}<span class="char-wrapper" style="--char-index: ${firstName.length}">&nbsp;</span>${lastName.split('').map((char, index) => 
+    `<span class="char-wrapper" style="--char-index: ${firstName.length + 1 + index}">${char}</span>`
+).join('')}`;
 const spans = nameElement.querySelectorAll('.char-wrapper');
 
 // Enhanced initial animation with staggered 3D effect

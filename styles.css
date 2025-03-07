@@ -141,13 +141,14 @@ html.light-mode {
 #floating-name {
     perspective: 1000px;
     transform-style: preserve-3d;
+    font-size: 6rem;
 }
 
 .char-wrapper {
     display: inline-block;
     transform-style: preserve-3d;
     transition: color 0.3s ease;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3); /* Reduced stroke width */
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
 }
 
 .hero-content p {
