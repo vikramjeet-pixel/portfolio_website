@@ -140,6 +140,7 @@ function requestDeviceOrientation() {
 }
 
 function handleOrientation(event) {
+// sourcery skip: use-braces
     if (!event.beta || !event.gamma) return;
     const tiltX = event.gamma / 45;
     const tiltY = (event.beta - 90) / 45;
@@ -167,6 +168,7 @@ function animate() {
         particle.userData.angle += particle.userData.speed;
         const x = Math.cos(particle.userData.angle) * particle.userData.radius;
         const y = Math.sin(particle.userData.angle) * particle.userData.radius;
+// sourcery skip: use-object-destructuring
         const z = particle.position.z;
         
         particle.position.set(x, y, z);
@@ -429,6 +431,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+// sourcery skip: avoid-function-declarations-in-blocks
     function showToast(message, bgColor) {
         toast.textContent = message;
         toast.style.background = bgColor;

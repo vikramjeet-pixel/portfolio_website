@@ -78,19 +78,20 @@ html.light-mode {
 .nav-links {
     display: flex;
     list-style: none;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .nav-links li a {
     color: var(--text-color);
-    font-size: 1.125rem;
+    font-size: 1rem;
     text-decoration: none;
+    display: inline-block;
     transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .nav-links li a:hover {
     color: var(--secondary-color);
-    transform: translateY(-2px);
+    transform: scale(1.3);
 }
 
 .hamburger {
@@ -174,7 +175,7 @@ html.light-mode {
 .cta-btn {
     padding: 0.75rem 2rem;
     background: transparent;
-    border: 0.7px solid var(--accent-color);
+    border: 0.9px solid var(--accent-color);
     color: var(--accent-color);
     font-size: 1.125rem;
     border-radius: 25px;
@@ -183,7 +184,7 @@ html.light-mode {
     animation: fadeInUp 1s ease-out 0.4s backwards;
     flex: 0 1 auto;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .cta-btn:hover {
@@ -201,7 +202,7 @@ html.light-mode {
 }
 
 .education h2 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: var(--secondary-color);
     text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
     margin-bottom: 3.125rem;
@@ -248,7 +249,7 @@ html.light-mode {
 }
 
 .skills h2 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: var(--secondary-color);
     text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
     margin-bottom: 3.125rem;
@@ -296,7 +297,7 @@ html.light-mode {
 }
 
 .projects h2 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: var(--secondary-color);
     text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
     margin-bottom: 3.125rem;
@@ -453,7 +454,7 @@ html.light-mode {
 }
 
 .certifications h2 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: var(--secondary-color);
     text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
     margin-bottom: 3.125rem;
@@ -535,7 +536,7 @@ html.light-mode {
 }
 
 .connect h2 {
-    font-size: 2.5rem;
+    font-size: 3rem;
     color: var(--secondary-color);
     text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
     margin-bottom: 2.5rem;
