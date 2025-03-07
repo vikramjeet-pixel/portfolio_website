@@ -416,6 +416,7 @@ html.light-mode {
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
     position: relative;
+    border: 0.5px solid var(--accent-color);
 }
 
 .certification-card:hover {

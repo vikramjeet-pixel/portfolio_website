@@ -5,21 +5,35 @@ gsap.registerPlugin(ScrollTrigger);
 const themeToggle = document.getElementById('theme-toggle');
 themeToggle.addEventListener('click', () => {
     const html = document.documentElement;
-    html.classList.toggle('dark-mode');
-    html.classList.toggle('light-mode');
+    
+    // Start fade out
     gsap.to('body', {
         opacity: 0,
-        duration: 0.2,
-        ease: 'power2.in',
+        scale: 0.98,
+        duration: 0.4,
+        ease: 'power2.inOut',
         onComplete: () => {
+            // Toggle theme classes
+            html.classList.toggle('dark-mode');
+            html.classList.toggle('light-mode');
+            
+            // Fade back in with slight scale up
             gsap.to('body', {
                 opacity: 1,
-                duration: 0.3,
+                scale: 1,
+                duration: 0.4,
                 ease: 'power2.out'
             });
         }
     });
+
+    // Animate the icon
     const icon = themeToggle.querySelector('i');
+    gsap.to(icon, {
+        rotate: '360deg',
+        duration: 0.6,
+        ease: 'power2.inOut'
+    });
     icon.classList.toggle('fa-moon');
     icon.classList.toggle('fa-sun');
 });
