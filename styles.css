@@ -171,10 +171,10 @@ html.light-mode {
 .cta-btn {
     padding: 0.75rem 2rem;
     background: transparent;
-    border: 2px solid var(--accent-color);
+    border: 0.7px solid var(--accent-color);
     color: var(--accent-color);
     font-size: 1.125rem;
-    border-radius: 0;
+    border-radius: 25px;
     cursor: pointer;
     transition: background 0.3s ease, color 0.3s ease;
     animation: fadeInUp 1s ease-out 0.4s backwards;
