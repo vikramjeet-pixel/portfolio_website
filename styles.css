@@ -21,7 +21,7 @@ body {
 /* Theme Variables */
 html.dark-mode {
   --bg-color: #000000;
-  --text-color: #cccccc;
+  --text-color: #ffffff;
   --accent-color: #ffffff;
   --secondary-color: #999999;
   --card-bg: #333333;
@@ -37,7 +37,7 @@ html.light-mode {
   --bg-color: #ffffff;
   --text-color: #333333;
   --accent-color: #000000;
-  --secondary-color: #666666;
+  --secondary-color: #ffffff;
   --card-bg: #999999;
   --nav-bg: rgba(255, 255, 255, 0.9);
   --particle-color: #555555;
@@ -188,12 +188,13 @@ html.light-mode {
 .cta-btn:hover {
   background: var(--secondary-color);
   color: var(--bg-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
 }
 
 /* Education Section */
 .education {
   padding: 6.25rem 3.125rem;
-  background: var(--bg-color);
+  background: var(--bg-color) url('./assets/education-bg.jpg') no-repeat center center/cover;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -240,7 +241,7 @@ html.light-mode {
 /* Skills Section */
 .skills {
   padding: 6.25rem 3.125rem;
-  background: var(--card-bg);
+  background: var(--card-bg) url('./assets/skills-bg.jpg') no-repeat center center/cover;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -288,7 +289,7 @@ html.light-mode {
 /* Projects Section */
 .projects {
   padding: 6.25rem 3.125rem;
-  background: var(--bg-color);
+  background: var(--bg-color) url('./assets/projects-bg.jpg') no-repeat center center/cover;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -390,10 +391,11 @@ html.light-mode {
 /* Hackathons Section */
 .hackathons {
   padding: 6.25rem 3.125rem;
-  background: var(--bg-color);
+  background: var(--bg-color) url('./assets/hackathons-bg.jpg') no-repeat center center/cover;
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-size: 1.5rem;
 }
 
 .hackathon-grid {
@@ -624,7 +626,7 @@ html.light-mode {
 /* Certifications Section */
 .certifications {
   padding: 6.25rem 3.125rem;
-  background: var(--card-bg);
+  background: var(--bg-color) url('./assets/certification-bg.jpg') no-repeat center center/cover;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -632,7 +634,7 @@ html.light-mode {
 
 .certifications h2 {
   font-size: 3rem;
-  color: var(--secondary-color);
+  color: var(--secondary-color) ;
   text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
   margin-bottom: 3.125rem;
   text-align: center;
@@ -706,7 +708,7 @@ html.light-mode {
 /* Connect Section */
 .connect {
   padding: 6.25rem 3.125rem;
-  background: var(--bg-color);
+  background: var(--bg-color) url('assets/connect-bg.jpg') no-repeat center center/cover;
   display: flex;
   flex-direction: column;
   align-items: center;
