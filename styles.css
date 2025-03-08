@@ -173,7 +173,7 @@ html.light-mode {
 .cta-btn {
   padding: 0.75rem 2rem;
   background: transparent;
-  border: 0.9px solid var(--accent-color);
+  border: 1.5px solid var(--accent-color);
   color: var(--accent-color);
   font-size: 1.125rem;
   border-radius: 25px;
