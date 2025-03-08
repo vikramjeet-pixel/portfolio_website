@@ -62,18 +62,17 @@ html.light-mode {
     z-index: 100;
 }
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--accent-color);
-    transition: transform 0.3s ease;
-    margin-right: 1rem;
-    text-decoration: none;
+.logo img {
+    width: 100px; /* Adjust width */
+    height: auto; /* Maintain aspect ratio */
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Smooth transition for scaling and opacity */
 }
 
-.logo:hover {
-    transform: scale(1.1);
+.logo:hover img {
+    transform: scale(1.1); /* Scale the logo */
+    opacity: 0.8; /* Optional: Add slight opacity change on hover */
 }
+
 
 .nav-links {
     display: flex;
