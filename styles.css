@@ -19,6 +19,7 @@ body {
 }
 
 /* Theme Variables */
+/* Dark Mode */
 html.dark-mode {
   --bg-color: #000000;
   --text-color: #ffffff;
@@ -33,20 +34,20 @@ html.dark-mode {
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* Light Mode */
 html.light-mode {
   --bg-color: #ffffff;
   --text-color: #333333;
   --accent-color: #000000;
-  --secondary-color: #ffffff;
-  --card-bg: #999999;
+  --secondary-color: #666666; /* Changed from #ffffff for better contrast */
+  --card-bg: #f0f0f0; /* Changed from #999999 for better contrast */
   --nav-bg: rgba(255, 255, 255, 0.9);
-  --particle-color: #555555;
-  --cert-card-bg: #999999;
-  --cert-card-hover: #444444;
-  --cert-card-active: #333333;
+  --particle-color: #ffffff;
+  --cert-card-bg: #e0e0e0; /* Changed from #999999 for better contrast */
+  --cert-card-hover: #cccccc; /* Adjusted from #444444 */
+  --cert-card-active: #b3b3b3; /* Adjusted from #333333 */
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
 /* Navbar */
 .navbar {
   position: fixed;
@@ -202,7 +203,7 @@ html.light-mode {
 
 .education h2 {
   font-size: 3rem;
-  color: var(--secondary-color);
+  color: var(--particle-color);
   text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
   margin-bottom: 3.125rem;
   text-align: center;
@@ -230,7 +231,7 @@ html.light-mode {
 
 .education-card h3 {
   font-size: 1.25rem;
-  color: var(--secondary-color);
+  color: var(--text-color);
   margin-bottom: 0.625rem;
 }
 
@@ -249,7 +250,7 @@ html.light-mode {
 
 .skills h2 {
   font-size: 3rem;
-  color: var(--secondary-color);
+  color: var(--particle-color);
   text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
   margin-bottom: 3.125rem;
   text-align: center;
@@ -289,7 +290,7 @@ html.light-mode {
 /* Projects Section */
 .projects {
   padding: 6.25rem 3.125rem;
-  background: var(--bg-color) url('./assets/projects-bg.jpg') no-repeat center center/cover;
+  background: var(--particle-color) url('./assets/projects-bg.jpg') no-repeat center center/cover;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -297,7 +298,7 @@ html.light-mode {
 
 .projects h2 {
   font-size: 3rem;
-  color: var(--secondary-color);
+  color: var(--particle-color);
   text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
   margin-bottom: 3.125rem;
   text-align: center;
@@ -398,6 +399,14 @@ html.light-mode {
   font-size: 1.5rem;
 }
 
+.hackathons h2 {
+  font-size: 3rem;
+  color: var(--particle-color);
+  text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
+  margin-bottom: 3.125rem;
+  text-align: center;
+}
+
 .hackathon-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(18.75rem, 1fr));
@@ -453,7 +462,7 @@ html.light-mode {
 
 .hackathon-photos h3 {
   font-size: 2rem;
-  color: var(--secondary-color);
+  color: var(--particle-color);
   text-align: center;
   margin-bottom: 2rem;
 }
@@ -634,7 +643,7 @@ html.light-mode {
 
 .certifications h2 {
   font-size: 3rem;
-  color: var(--secondary-color) ;
+  color: var(--particle-color) ;
   text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
   margin-bottom: 3.125rem;
   text-align: center;
@@ -716,7 +725,7 @@ html.light-mode {
 
 .connect h2 {
   font-size: 3rem;
-  color: var(--secondary-color);
+  color: var(--particle-color);
   text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
   margin-bottom: 2.5rem;
   text-align: center;
@@ -728,14 +737,14 @@ html.light-mode {
 
 .social-icons a {
   font-size: 1.875rem;
-  color: var(--text-color);
+  color: var(--particle-color);
   margin: 0 1.25rem;
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .social-icons a:hover {
   transform: scale(1.2) rotate(5deg);
-  color: var(--secondary-color);
+  color: var(--bg-color);
 }
 
 .social-icons .fa-twitter:hover {
