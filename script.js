@@ -3,6 +3,25 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Theme Toggle with Animation
 const themeToggle = document.getElementById('theme-toggle');
+const icon = themeToggle.querySelector('i');
+
+// Continuous floating and rotating animation
+gsap.to(icon, {
+    y: 10, // Vertical bobbing for floating effect
+    duration: 1.5,
+    yoyo: true,
+    repeat: -1,
+    ease: 'sine.inOut'
+});
+
+gsap.to(icon, {
+    rotate: '360deg',
+    duration: 4, // Slower rotation for continuous effect
+    repeat: -1,
+    ease: 'linear'
+});
+
+// Toggle theme classes on click (without affecting the continuous animation)
 themeToggle.addEventListener('click', () => {
     const html = document.documentElement;
     
@@ -27,13 +46,7 @@ themeToggle.addEventListener('click', () => {
         }
     });
 
-    // Animate the icon
-    const icon = themeToggle.querySelector('i');
-    gsap.to(icon, {
-        rotate: '360deg',
-        duration: 0.6,
-        ease: 'power2.inOut'
-    });
+    // Toggle icon classes (moon/sun) on click
     icon.classList.toggle('fa-moon');
     icon.classList.toggle('fa-sun');
 });
@@ -224,7 +237,7 @@ const firstName = "Vikramjeet";
 const lastName = "Singh";
 nameElement.innerHTML = `${firstName.split('').map((char, index) => 
     `<span class="char-wrapper" style="--char-index: ${index}">${char}</span>`
-).join('')}<span class="char-wrapper" style="--char-index: ${firstName.length}">&nbsp;</span>${lastName.split('').map((char, index) => 
+).join('')}<span class="char-wrapper" style="--char-index: ${firstName.length}"> </span>${lastName.split('').map((char, index) => 
     `<span class="char-wrapper" style="--char-index: ${firstName.length + 1 + index}">${char}</span>`
 ).join('')}`;
 const spans = nameElement.querySelectorAll('.char-wrapper');
