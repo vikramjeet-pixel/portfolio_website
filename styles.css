@@ -31,6 +31,7 @@ html.dark-mode {
   --cert-card-bg: #333333;
   --cert-card-hover: #666666;
   --cert-card-active: #999999;
+  --stars-color: #ffffff;
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -46,6 +47,7 @@ html.light-mode {
   --cert-card-bg: #e0e0e0; /* Changed from #999999 for better contrast */
   --cert-card-hover: #cccccc; /* Adjusted from #444444 */
   --cert-card-active: #b3b3b3; /* Adjusted from #333333 */
+  --stars-color: #000000;
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 /* Navbar */

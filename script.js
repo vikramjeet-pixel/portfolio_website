@@ -174,7 +174,7 @@ function animate() {
 
     const positions = [];
     const colors = [];
-    const particleColorHex = getComputedStyle(document.documentElement).getPropertyValue('--particle-color').trim();
+    const particleColorHex = getComputedStyle(document.documentElement).getPropertyValue('--stars-color').trim();
     const particleColor = parseInt(particleColorHex.replace('#', ''), 16);
     
     particles.children.forEach((particle, i) => {
