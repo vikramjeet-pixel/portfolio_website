@@ -206,7 +206,7 @@ html.light-mode {
 .education h2 {
   font-size: 3rem;
   color: var(--particle-color);
-  text-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.1);
+  text-shadow: 0 0.25rem 0.5rem rgba(50, 50, 50, 0.2); /* Darker, softer shadow */
   margin-bottom: 3.125rem;
   text-align: center;
 }
@@ -220,15 +220,15 @@ html.light-mode {
 }
 
 .education-card {
-  background: var(--card-bg);
+  background: rgba(255, 255, 255, 0.2);
   padding: 1.25rem;
-  border-radius: 0.625rem;
+  border-radius: 1rem; /* Smoother corners */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .education-card:hover {
-  transform: translateY(-0.625rem);
-  box-shadow: 0 0.625rem 1.25rem rgba(0, 0, 0, 0.3);
+  transform: translateY(-8.5rem); /* Slightly less lift */
+  box-shadow: 0 0.75rem 1.5rem rgba(100, 100, 100, 0.25); /* Lighter, broader shadow */
 }
 
 .education-card h3 {
@@ -240,7 +240,6 @@ html.light-mode {
 .education-card p {
   font-size: 1rem;
 }
-
 /* Skills Section */
 .skills {
   padding: 6.25rem 3.125rem;
