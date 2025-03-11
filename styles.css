@@ -32,6 +32,7 @@ html.dark-mode {
   --cert-card-hover: #666666;
   --cert-card-active: #999999;
   --stars-color: #ffffff;
+  --edu-color: #6868687a;
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -48,6 +49,7 @@ html.light-mode {
   --cert-card-hover: #cccccc; /* Adjusted from #444444 */
   --cert-card-active: #b3b3b3; /* Adjusted from #333333 */
   --stars-color: #000000;
+  --edu-color: #c5c5c5aa;
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 /* Navbar */
@@ -220,7 +222,7 @@ html.light-mode {
 }
 
 .education-card {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--edu-color);
   padding: 1.25rem;
   border-radius: 1rem; /* Smoother corners */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
