@@ -13,8 +13,8 @@ Welcome to my personal portfolio website repository! This project showcases my s
 ## 🔧 Technologies Used
 
 - **Frontend**: HTML, CSS, JavaScript
-- **Frameworks**: [Specify any frameworks used, if applicable, e.g., React, Bootstrap]
-- **Hosting**: [Mention your hosting platform, e.g., GitHub Pages, Netlify, Vercel]
+- **Frameworks**: Three.js
+- **Hosting**: Vercel
 
 ## 🚀 Getting Started
 
