@@ -755,6 +755,77 @@ html.light-mode {
   display: none;
 }
 
+/* ... existing styles ... */
+
+/* ... existing styles ... */
+
+/* Google text styling - simplified with solid colors */
+.google-text {
+  font-weight: bold;
+}
+
+.google-text .g {
+  color: #4285F4; /* Google Blue */
+}
+
+.google-text .o1 {
+  color: #EA4335; /* Google Red */
+}
+
+.google-text .o2 {
+  color: #FBBC05; /* Google Yellow */
+}
+
+.google-text .g2 {
+  color: #4285F4; /* Google Blue */
+}
+
+.google-text .l {
+  color: #34A853; /* Google Green */
+}
+
+.google-text .e {
+  color: #EA4335; /* Google Red */
+}
+
+/* Remove the problematic pseudo-elements */
+.google-text::before,
+.google-text::after {
+  content: none;
+}
+
+/* ... rest of your styles ... */
+
+
+
+.badge-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  display: block;
+  border: 3px solid var(--primary-color);
+  transition: transform 0.3s ease;
+}
+
+.badge-image:hover {
+  transform: scale(1.05);
+}
+
+.view-more {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.view-more .github-btn {
+  padding: 12px 24px;
+  border-radius: 25px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
 /* Connect Section */
 .connect {
   padding: 6.25rem 3.125rem;
