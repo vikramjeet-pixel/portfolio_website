@@ -107,7 +107,7 @@ html.light-mode {
 .theme-btn {
   background: none;
   border: none;
-  font-size: 1.25rem;
+  font-size: 2rem;
   color: var(--text-color);
   cursor: pointer;
   transition: color 0.3s ease, transform 0.3s ease;
@@ -208,7 +208,7 @@ html.light-mode {
 .education h2 {
   font-size: 3rem;
   color: var(--particle-color);
-  text-shadow: 0 0.25rem 0.5rem rgba(50, 50, 50, 0.2); /* Darker, softer shadow */
+  text-shadow: 0 0.25rem 0.5rem rgba(50, 50, 50, 0.2);
   margin-bottom: 3.125rem;
   text-align: center;
 }
@@ -223,25 +223,132 @@ html.light-mode {
 
 .education-card {
   background: var(--edu-color);
-  padding: 1.25rem;
-  border-radius: 1rem; /* Smoother corners */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  animation: float 6s ease-in-out infinite;
+  transform-origin: center;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.education-card:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.education-card:nth-child(3) {
+  animation-delay: 2s;
+}
+
+.education-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-color), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.5s ease;
+  transform: translateX(0);
+}
+
+.education-card::after {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  right: -50%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease, transform 0.7s ease;
+  pointer-events: none;
 }
 
 .education-card:hover {
-  transform: translateY(-8.5rem); /* Slightly less lift */
-  box-shadow: 0 0.75rem 1.5rem rgba(100, 100, 100, 0.25); /* Lighter, broader shadow */
+  transform: translateY(-0.75rem) scale(1.03) rotateX(5deg) rotateY(5deg);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25), 0 5px 10px rgba(0, 0, 0, 0.1);
+  background: var(--edu-color);
+  animation-play-state: paused;
+}
+
+.education-card:hover::before {
+  opacity: 1;
+  transform: translateX(100%);
+}
+
+.education-card:hover::after {
+  opacity: 1;
+  transform: translate(-25%, -25%);
 }
 
 .education-card h3 {
   font-size: 1.25rem;
   color: var(--text-color);
   margin-bottom: 0.625rem;
+  font-weight: 600;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.education-card:hover h3 {
+  transform: translateY(-2px) scale(1.05);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .education-card p {
   font-size: 1rem;
+  line-height: 1.5;
+  color: var(--text-color);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
+
+.education-card:hover p {
+  transform: translateY(-1px);
+  opacity: 0.95;
+}
+
+.education-card-content {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.4s ease;
+}
+
+.education-card:hover .education-card-content {
+  transform: translateZ(10px);
+}
+
+.education-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.education-card:hover .education-card-overlay {
+  opacity: 1;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotateX(0) rotateY(0);
+  }
+  50% {
+    transform: translateY(-0.5rem) rotateX(2deg) rotateY(2deg);
+  }
+}
+
+/* ... existing code ... */
 /* Skills Section */
 .skills {
   padding: 6.25rem 3.125rem;
@@ -265,6 +372,7 @@ html.light-mode {
   gap: 1.25rem;
   max-width: 75rem;
   width: 100%;
+  perspective: 1000px;
 }
 
 .skill-item {
@@ -276,20 +384,56 @@ html.light-mode {
   border-radius: 0.625rem;
   font-size: 1.125rem;
   color: var(--text-color);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  transform-origin: center;
+}
+
+.skill-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
 }
 
 .skill-item i {
   font-size: 1.875rem;
   color: var(--accent-color);
   margin-bottom: 0.625rem;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.skill-item span {
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-origin: center;
 }
 
 .skill-item:hover {
-  transform: translateY(-0.3125rem);
-  box-shadow: 0 0.3125rem 0.9375rem rgba(0, 0, 0, 0.3);
+  transform: scale(1.08);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
 }
 
+.skill-item:hover::before {
+  opacity: 1;
+}
+
+.skill-item:hover i {
+  transform: scale(1.15);
+}
+
+.skill-item:hover span {
+  transform: scale(1.1);
+  font-weight: 500;
+}
 /* Projects Section */
 .projects {
   padding: 6.25rem 3.125rem;
@@ -1093,4 +1237,17 @@ footer {
     transform: translateY(0);
   }
 }
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
 
